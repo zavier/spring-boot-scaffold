@@ -1,0 +1,27 @@
+server:
+  port: 8080
+
+spring:
+  profiles:
+    active: dev
+  datasource:
+    url: jdbc:mysql://localhost:3306/demo?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8
+    username: root
+    password: root
+
+amazon:
+  sourceId: "This is sourceId"
+
+---
+spring:
+  profiles: dev
+  thymeleaf:
+          cache: false
+debug: true
+
+---
+spring:
+  profiles: pro
+  thymeleaf:
+    cache: true
+debug: false
