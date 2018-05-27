@@ -1,9 +1,9 @@
 package com.zavier.scaffold.web;
 
+import com.zavier.scaffold.common.ProcessException;
+import com.zavier.scaffold.common.ResultBean;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -15,14 +15,20 @@ public class DemoController {
     private String sourceId;
 
     @GetMapping("/test")
-    public String test() {
+    public ResultBean<String> test() {
         log.info(sourceId);
-        return "Hello";
+        return ResultBean.createBySuccess("SUCCESS");
     }
 
     @GetMapping("/testerror")
-    public String testError() {
+    public ResultBean<String> testError() {
         log.error("error");
-        throw new RuntimeException("testError");
+        throw new ProcessException("testError");
+    }
+
+    @GetMapping("/testerror1")
+    public String testError1() {
+        log.error("error");
+        throw new ProcessException("testError");
     }
 }

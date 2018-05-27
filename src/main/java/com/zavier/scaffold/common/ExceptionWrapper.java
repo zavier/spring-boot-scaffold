@@ -1,20 +1,57 @@
 package com.zavier.scaffold.common;
 
 import lombok.extern.slf4j.Slf4j;
+import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.AfterReturning;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
+import org.aspectj.lang.annotation.Pointcut;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
 
 /**
  * 异常处理
  */
-@ControllerAdvice
+@Aspect
+@Component
 @Slf4j
 public class ExceptionWrapper {
-    @ExceptionHandler(Exception.class)
-    @ResponseBody
-    public String parseException(Exception e) {
-        log.error("系统错误", e);
-        return "Error";
+
+    @Pointcut("execution(public ResultBean com.zavier.scaffold.web..*.*(..))")
+    public void pointCut(){}
+
+    @Around("pointCut()")
+    public ResultBean around(ProceedingJoinPoint pjp) {
+        // 接收到请求，记录请求内容
+        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        HttpServletRequest request = attributes.getRequest();
+
+        // 记录下请求内容
+        log.info("URL : " + request.getRequestURL().toString());
+        log.info("HTTP_METHOD : " + request.getMethod());
+        log.info("IP : " + request.getRemoteAddr());
+        log.info("CLASS_METHOD : " + pjp.getSignature().getDeclaringTypeName() + "." + pjp.getSignature().getName());
+        log.info("ARGS : " + Arrays.toString(pjp.getArgs()));
+
+        ResultBean resultBean;
+        try {
+            resultBean = (ResultBean) pjp.proceed();
+        } catch (ProcessException e) {
+            log.error("业务处理异常", e);
+            return ResultBean.createByErrorMessage(e.getMessage());
+        } catch (Throwable e) {
+            log.error("系统异常", e);
+            return ResultBean.createByErrorMessage(e.getMessage());
+        }
+        return resultBean;
     }
 }
