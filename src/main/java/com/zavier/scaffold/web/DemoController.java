@@ -19,4 +19,10 @@ public class DemoController {
         log.info(sourceId);
         return "Hello";
     }
+
+    @GetMapping("/testerror")
+    public String testError() {
+        log.error("error");
+        throw new RuntimeException("testError");
+    }
 }
