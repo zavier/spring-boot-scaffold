@@ -1,7 +1,9 @@
 package com.zavier.scaffold.web;
 
+import com.github.pagehelper.PageInfo;
 import com.zavier.scaffold.common.ProcessException;
 import com.zavier.scaffold.common.ResultBean;
+import com.zavier.scaffold.pojo.Customer;
 import com.zavier.scaffold.service.DemoService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,5 +49,11 @@ public class DemoController {
     public ResultBean<String> testRollBack1() {
         demoService.testRollBack1();
         return ResultBean.createBySuccess();
+    }
+
+    @GetMapping("/page")
+    public ResultBean<PageInfo<Customer>> testPageHelper() {
+        PageInfo<Customer> customerPageInfo = demoService.testPageHelper();
+        return ResultBean.createBySuccess(customerPageInfo);
     }
 }
