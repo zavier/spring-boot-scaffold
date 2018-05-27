@@ -1,5 +1,7 @@
 package com.zavier.scaffold;
 
+import com.zavier.scaffold.dao.CustomerMapper;
+import com.zavier.scaffold.pojo.Customer;
 import com.zavier.scaffold.service.DemoService;
 import org.junit.Assert;
 import org.junit.Test;
@@ -27,9 +29,18 @@ public class SpringBootScaffoldApplicationTests {
     @Autowired
     private DemoService demoService;
 
+    @Autowired
+    private CustomerMapper customerMapper;
+
     @Test
     public void testService() {
         Assert.assertEquals("DemoService", demoService.test());
+    }
+
+    @Test
+    public void testMapper() {
+        Customer customer = customerMapper.selectByPrimaryKey(1L);
+        System.out.println(customer);
     }
 
     @Test
