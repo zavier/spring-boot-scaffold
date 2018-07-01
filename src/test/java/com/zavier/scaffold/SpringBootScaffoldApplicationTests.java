@@ -2,10 +2,9 @@ package com.zavier.scaffold;
 
 import com.zavier.scaffold.dao.CustomerMapper;
 import com.zavier.scaffold.pojo.Customer;
-import com.zavier.scaffold.service.DemoService;
+import com.zavier.scaffold.service.impl.DemoServiceImpl;
 import org.junit.Assert;
 import org.junit.Test;
-import org.junit.experimental.results.ResultMatchers;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -27,7 +26,7 @@ public class SpringBootScaffoldApplicationTests {
     private MockMvc mvc;
 
     @Autowired
-    private DemoService demoService;
+    private DemoServiceImpl demoService;
 
     @Autowired
     private CustomerMapper customerMapper;

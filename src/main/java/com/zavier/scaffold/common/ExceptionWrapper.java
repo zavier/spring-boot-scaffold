@@ -36,21 +36,25 @@ public class ExceptionWrapper {
         HttpServletRequest request = attributes.getRequest();
 
         // 记录下请求内容
+        long startTime = System.currentTimeMillis();
         log.info("URL : " + request.getRequestURL().toString());
         log.info("HTTP_METHOD : " + request.getMethod());
         log.info("IP : " + request.getRemoteAddr());
-        log.info("CLASS_METHOD : " + pjp.getSignature().getDeclaringTypeName() + "." + pjp.getSignature().getName());
+        String classMethod = pjp.getSignature().getDeclaringTypeName() + "." + pjp.getSignature().getName();
+        log.info("CLASS_METHOD : " + classMethod);
         log.info("ARGS : " + Arrays.toString(pjp.getArgs()));
 
         ResultBean resultBean;
         try {
             resultBean = (ResultBean) pjp.proceed();
+            long endTime = System.currentTimeMillis();
+            log.info("{} 用时: {} ms", classMethod, (endTime - startTime));
         } catch (ProcessException e) {
             log.error("业务处理异常", e);
             return ResultBean.createByErrorMessage(e.getMessage());
         } catch (Throwable e) {
             log.error("系统异常", e);
-            return ResultBean.createByErrorMessage(e.getMessage());
+            return ResultBean.createByErrorMessage("系统内部错误，请稍后重试");
         }
         return resultBean;
     }

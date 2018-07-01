@@ -5,9 +5,9 @@ spring:
   profiles:
     active: dev
   datasource:
-    url: jdbc:mysql://localhost:3306/demo?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8
+    url: jdbc:mysql://localhost:3306/demo?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false
     username: root
-    password: root
+    password:
 
 # MyBatis配置
 mybatis:
@@ -17,6 +17,11 @@ mybatis:
 # 测试用
 amazon:
   sourceId: "This is sourceId"
+
+shiro:
+  loginUrl: /unauthorication
+
+
 
 ---
 spring:

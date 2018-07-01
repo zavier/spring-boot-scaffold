@@ -80,7 +80,7 @@ public class ResultBean<T> implements Serializable {
     }
 
     public static <T> ResultBean<T> createByNotLogin() {
-        return new ResultBean<>(ResultCode.NOT_LOGIN, "Not Login");
+        return new ResultBean<>(ResultCode.NOT_LOGIN, "未登录");
     }
 
     public static <T> ResultBean<T> createByNotLoginMessage(String message) {
